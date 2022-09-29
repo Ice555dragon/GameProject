@@ -130,6 +130,7 @@ namespace GameProject
                 {
                     MatchColor[1] = Color.Red;
                 }
+
                 if (blockHit[i].Contains(mouse.X, mouse.Y) && mouse.LeftButton == ButtonState.Pressed && Premouse.LeftButton == ButtonState.Released && isSelect == false)
                 {
                     isSelect = true;
@@ -140,7 +141,7 @@ namespace GameProject
                 }
                 else if (blockHit[i].Contains(mouse.X, mouse.Y) && mouse.LeftButton == ButtonState.Pressed && Premouse.LeftButton == ButtonState.Released && isSelect == true) 
                 {
-                    isSelect = false;
+                    
                     //first
                     Type[preMatch] = Type[i];
                     position[preMatch] = position[i];
@@ -148,11 +149,7 @@ namespace GameProject
                     //second
                     Type[i] = TypeSwap;
                     position[i] = swapPos;
-                    blockHit[i] = Recswap;                   
-                }
-                else if (mouse.LeftButton == ButtonState.Released && Premouse.LeftButton == ButtonState.Pressed && isSelect == true)
-                {
-                    
+                    blockHit[i] = Recswap;
                 }
             } 
            
@@ -168,10 +165,7 @@ namespace GameProject
             for (int i = 0; i < 60; i++)
             {                  
                     _spriteBatch.Draw(matchTexture, position[i],TypeSelect[i], MatchColor[i]);                         
-            }
-            
-
-            
+            }         
             _spriteBatch.End();
             base.Draw(gameTime);
         }
