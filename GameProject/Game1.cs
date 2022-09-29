@@ -15,12 +15,17 @@ namespace GameProject
         Texture2D test;
         Texture2D matchTexture;
         MouseState mouse;
+        MouseState Premouse;
         int[] Type = new int[60];
         Vector2[] position = new Vector2[60];        
         Rectangle[] blockHit = new Rectangle[60];
         Rectangle[] TypeSelect = new Rectangle[60];
-        Rectangle testRec = new Rectangle(72*4,0, 72, 72);
-        Color[] MatchColor = new Color[60]; 
+        Color[] MatchColor = new Color[60];
+        Vector2 swapPos;
+        int TypeSwap,preMatch;
+        Rectangle Recswap;
+        bool isSelect = false;
+
         
 
         public Game1()
@@ -112,16 +117,42 @@ namespace GameProject
         {
             if (GamePad.GetState(PlayerIndex.One).Buttons.Back == ButtonState.Pressed || Keyboard.GetState().IsKeyDown(Keys.Escape))
                 Exit();
+            Premouse = mouse;
             mouse = Mouse.GetState();
-           for (int i = 0; i < 60; i++)
-            {
-                MatchColor[i] = Color.White;
-            }
            for(int i = 0;i<60; i++)
             {
-                if (blockHit[i].Contains(mouse.X, mouse.Y))
+                MatchColor[i] = Color.White;
+                if(isSelect == true)
                 {
-                    MatchColor[i] = Color.Red;
+                    MatchColor[1] = Color.Black;
+                }
+                else if (isSelect == false)
+                {
+                    MatchColor[1] = Color.Red;
+                }
+                if (blockHit[i].Contains(mouse.X, mouse.Y) && mouse.LeftButton == ButtonState.Pressed && Premouse.LeftButton == ButtonState.Released && isSelect == false)
+                {
+                    isSelect = true;
+                    TypeSwap = Type[i];
+                    swapPos = position[i];
+                    Recswap = blockHit[i];
+                    preMatch = i;
+                }
+                else if (blockHit[i].Contains(mouse.X, mouse.Y) && mouse.LeftButton == ButtonState.Pressed && Premouse.LeftButton == ButtonState.Released && isSelect == true) 
+                {
+                    isSelect = false;
+                    //first
+                    Type[preMatch] = Type[i];
+                    position[preMatch] = position[i];
+                    blockHit[preMatch] = blockHit[i];
+                    //second
+                    Type[i] = TypeSwap;
+                    position[i] = swapPos;
+                    blockHit[i] = Recswap;                   
+                }
+                else if (mouse.LeftButton == ButtonState.Released && Premouse.LeftButton == ButtonState.Pressed && isSelect == true)
+                {
+                    
                 }
             } 
            
