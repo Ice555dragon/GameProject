@@ -143,7 +143,7 @@ namespace GameProject
                 }
                 else if (blockHit[i].Contains(mouse.X, mouse.Y) && mouse.LeftButton == ButtonState.Pressed && Premouse.LeftButton == ButtonState.Released && isSelect == true) 
                 {
-                    
+                    isSelect = false;
                     //first
                     Type[preMatch] = Type[i];
                     position[preMatch] = position[i];
