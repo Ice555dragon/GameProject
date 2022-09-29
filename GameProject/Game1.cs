@@ -74,41 +74,15 @@ namespace GameProject
                 position[i] = new Vector2(203 + (72 * count), 648);
                 count++;
             }
-            count = 0;
-            //hitbox for match3
-            for (int i = 0; i < 12; i++)
+            for (int i = 0;i<60; i++) 
             {
                 blockHit[i] = new Rectangle((int)position[i].X, (int)position[i].Y, 72, 72);
             }
-            count = 0;
-            for (int i = 12; i < 24; i++)
-            {
-                blockHit[i] = new Rectangle((int)position[i].X, (int)position[i].Y, 72, 72);
-                count++;
-            }
-            count = 0;
-            for (int i = 24; i < 36; i++)
-            {
-                blockHit[i] = new Rectangle((int)position[i].X, (int)position[i].Y, 72, 72);
-                count++;
-            }
-            count = 0;
-            for (int i = 36; i < 48; i++)
-            {
-                blockHit[i] = new Rectangle((int)position[i].X, (int)position[i].Y, 72, 72);
-                count++;
-            }
-            count = 0;
-            for (int i = 48; i < 60; i++)
-            {
-                blockHit[i] = new Rectangle((int)position[i].X, (int)position[i].Y, 72, 72);
-                count++;
-            }
-            count = 0;
+            
             //random
             for(int i = 0;i < 60; i++)
             {
-                Type[i] = r.Next(1, 5);
+                Type[i] = r.Next(1, 6);
                 if(Type[i] == 1)
                 {
                     TypeSelect[i] = new Rectangle(0, 0, 72, 72);
@@ -162,7 +136,7 @@ namespace GameProject
             
             for (int i = 0; i < 60; i++)
             {                  
-                    _spriteBatch.Draw(matchTexture, position[i],testRec, MatchColor[i]);                         
+                    _spriteBatch.Draw(matchTexture, position[i],TypeSelect[i], MatchColor[i]);                         
             }
             
 
