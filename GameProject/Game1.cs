@@ -119,6 +119,8 @@ namespace GameProject
                 Exit();
             Premouse = mouse;
             mouse = Mouse.GetState();
+
+            //swap code
            for(int i = 0;i<60; i++)
             {
                 MatchColor[i] = Color.White;
