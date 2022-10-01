@@ -21,7 +21,7 @@ namespace GameProject
         Rectangle[] blockHit = new Rectangle[60];
         Rectangle[] TypeSelect = new Rectangle[60];
         Color[] MatchColor = new Color[60];
-        int Selected;
+        int select;
 
         
 
@@ -119,22 +119,22 @@ namespace GameProject
             //swap code
            for(int i = 0;i<60; i++)
             {
-                MatchColor[i] = Color.White;                
+                MatchColor[i] = Color.White;
 
-                if (blockHit[i].Contains(mouse.X, mouse.Y) && mouse.LeftButton == ButtonState.Pressed  && Premouse.LeftButton == ButtonState.Released)
+                if (blockHit[i].Contains(mouse.X, mouse.Y) && mouse.LeftButton == ButtonState.Pressed && Premouse.LeftButton == ButtonState.Released)
                 {
-                    //check around
-                    for (int j = 0; j < 60; j++)
-                    {
-                        if (Type[i] == Type[j])
-                        {
-                            MatchColor[j] = Color.Blue;
-                        }
-                    }
-                }             
-            } 
-           
-            base.Update(gameTime);
+                    select = Type[i];
+                }
+            }
+            for (int i = 0; i < 60; i++)
+            {
+                if(Type[i] == select)
+                {
+                    MatchColor[i] = Color.Blue;
+                }
+            }
+
+                base.Update(gameTime);
         }
 
         protected override void Draw(GameTime gameTime)
