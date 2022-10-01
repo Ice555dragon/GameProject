@@ -108,7 +108,6 @@ namespace GameProject
                 {
                     TypeSelect[i] = new Rectangle(72*4, 0, 72, 72);
                 }
-
             }
 
         }
@@ -123,36 +122,72 @@ namespace GameProject
             //swap code
            for(int i = 0;i<60; i++)
             {
-                MatchColor[i] = Color.White;
-                if(isSelect == true)
+                MatchColor[i] = Color.White;                
+
+                if (blockHit[i].Contains(mouse.X, mouse.Y) && mouse.LeftButton == ButtonState.Pressed  && Premouse.LeftButton == ButtonState.Released)
                 {
-                    MatchColor[1] = Color.Black;
-                }
-                else if (isSelect == false)
-                {
-                    MatchColor[1] = Color.Red;
+                    //change on click
+                    Type[i] = r.Next(1, 6);                                  
+                        if (Type[i] == 1)
+                        {
+                            TypeSelect[i] = new Rectangle(0, 0, 72, 72);
+                        }
+                        else if (Type[i] == 2)
+                        {
+                            TypeSelect[i] = new Rectangle(72, 0, 72, 72);
+                        }
+                        else if (Type[i] == 3)
+                        {
+                            TypeSelect[i] = new Rectangle(72 * 2, 0, 72, 72);
+                        }
+                        else if (Type[i] == 4)
+                        {
+                            TypeSelect[i] = new Rectangle(72 * 3, 0, 72, 72);
+                        }
+                        else if (Type[i] == 5)
+                        {
+                            TypeSelect[i] = new Rectangle(72 * 4, 0, 72, 72);
+                        }
+
+                    //check around
+                    for (int j = 0; j < 12; j++)
+                    {
+                        if (Type[i] == Type[j])
+                        {
+                            MatchColor[j] = Color.Blue;
+                        }
+                    }
+                    for (int j = 12; j < 24; j++)
+                    {
+                        if (Type[i] == Type[j])
+                        {
+                            MatchColor[j] = Color.Blue;
+                        }
+                    }
+                    for (int j = 24; j < 36; j++)
+                    {
+                        if (Type[i] == Type[j])
+                        {
+                            MatchColor[j] = Color.Blue;
+                        }
+                    }                 
+                    for (int j = 36; j < 48; j++)
+                    {
+                        if (Type[i] == Type[j])
+                        {
+                            MatchColor[j] = Color.Blue;
+                        }
+                    }
+                    for (int j = 48; j < 60; j++)
+                    {
+                        if (Type[i] == Type[j])
+                        {
+                            MatchColor[j] = Color.Blue;
+                        }
+                    }                   
+
                 }
 
-                if (blockHit[i].Contains(mouse.X, mouse.Y) && mouse.LeftButton == ButtonState.Pressed && Premouse.LeftButton == ButtonState.Released && isSelect == false)
-                {
-                    isSelect = true;
-                    TypeSwap = Type[i];
-                    swapPos = position[i];
-                    Recswap = blockHit[i];
-                    preMatch = i;
-                }
-                else if (blockHit[i].Contains(mouse.X, mouse.Y) && mouse.LeftButton == ButtonState.Pressed && Premouse.LeftButton == ButtonState.Released && isSelect == true) 
-                {
-                    isSelect = false;
-                    //first
-                    Type[preMatch] = Type[i];
-                    position[preMatch] = position[i];
-                    blockHit[preMatch] = blockHit[i];
-                    //second
-                    Type[i] = TypeSwap;
-                    position[i] = swapPos;
-                    blockHit[i] = Recswap;
-                }
             } 
            
             base.Update(gameTime);
@@ -171,5 +206,7 @@ namespace GameProject
             _spriteBatch.End();
             base.Draw(gameTime);
         }
+
+
     }
 }
