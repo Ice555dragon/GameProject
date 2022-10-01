@@ -21,10 +21,7 @@ namespace GameProject
         Rectangle[] blockHit = new Rectangle[60];
         Rectangle[] TypeSelect = new Rectangle[60];
         Color[] MatchColor = new Color[60];
-        Vector2 swapPos;
-        int TypeSwap,preMatch;
-        Rectangle Recswap;
-        bool isSelect = false;
+        int Selected;
 
         
 
@@ -126,68 +123,15 @@ namespace GameProject
 
                 if (blockHit[i].Contains(mouse.X, mouse.Y) && mouse.LeftButton == ButtonState.Pressed  && Premouse.LeftButton == ButtonState.Released)
                 {
-                    //change on click
-                    Type[i] = r.Next(1, 6);                                  
-                        if (Type[i] == 1)
-                        {
-                            TypeSelect[i] = new Rectangle(0, 0, 72, 72);
-                        }
-                        else if (Type[i] == 2)
-                        {
-                            TypeSelect[i] = new Rectangle(72, 0, 72, 72);
-                        }
-                        else if (Type[i] == 3)
-                        {
-                            TypeSelect[i] = new Rectangle(72 * 2, 0, 72, 72);
-                        }
-                        else if (Type[i] == 4)
-                        {
-                            TypeSelect[i] = new Rectangle(72 * 3, 0, 72, 72);
-                        }
-                        else if (Type[i] == 5)
-                        {
-                            TypeSelect[i] = new Rectangle(72 * 4, 0, 72, 72);
-                        }
-
                     //check around
-                    for (int j = 0; j < 12; j++)
+                    for (int j = 0; j < 60; j++)
                     {
                         if (Type[i] == Type[j])
                         {
                             MatchColor[j] = Color.Blue;
                         }
                     }
-                    for (int j = 12; j < 24; j++)
-                    {
-                        if (Type[i] == Type[j])
-                        {
-                            MatchColor[j] = Color.Blue;
-                        }
-                    }
-                    for (int j = 24; j < 36; j++)
-                    {
-                        if (Type[i] == Type[j])
-                        {
-                            MatchColor[j] = Color.Blue;
-                        }
-                    }                 
-                    for (int j = 36; j < 48; j++)
-                    {
-                        if (Type[i] == Type[j])
-                        {
-                            MatchColor[j] = Color.Blue;
-                        }
-                    }
-                    for (int j = 48; j < 60; j++)
-                    {
-                        if (Type[i] == Type[j])
-                        {
-                            MatchColor[j] = Color.Blue;
-                        }
-                    }                   
-
-                }
-
+                }             
             } 
            
             base.Update(gameTime);
