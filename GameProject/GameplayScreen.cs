@@ -153,9 +153,13 @@ namespace GameProject
                 if (blockHit[i].Contains(mouse.X, mouse.Y) && mouse.LeftButton == ButtonState.Pressed && Premouse.LeftButton == ButtonState.Released)
                 {
                     combo = 0;
-                }
+                }               
             }
-
+            //reset combocheck
+            if (Keyboard.GetState().IsKeyDown(Keys.R) == true)
+            {
+                comboTest = Color.White;
+            }
             //Select Check
             if (select == 1)
             {
