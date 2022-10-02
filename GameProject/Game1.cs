@@ -13,15 +13,16 @@ namespace GameProject
         private GraphicsDeviceManager _graphics;
         private SpriteBatch _spriteBatch;
         Texture2D test;
-        Texture2D matchTexture;
+        Texture2D matchTexture,matchBG;
         MouseState mouse;
         MouseState Premouse;
         int[] Type = new int[60];
         Vector2[] position = new Vector2[60];        
         Rectangle[] blockHit = new Rectangle[60];
         Rectangle[] TypeSelect = new Rectangle[60];
-        Color TestColor;
-        int select;
+        Color TestColor,comboTest;
+        Color[] MatchColor = new Color[60];
+        int select,combo = 0;
 
         
 
@@ -46,7 +47,10 @@ namespace GameProject
             _spriteBatch = new SpriteBatch(GraphicsDevice);
             test = Content.Load<Texture2D>("Test");
             matchTexture = Content.Load<Texture2D>("Match");
+            matchBG = Content.Load<Texture2D>("matchBG");
             TestColor = Color.White;
+            comboTest = Color.White;
+
             //spawn all match3
             int count = 0;
            for (int i = 0; i < 12; i++)
@@ -116,14 +120,65 @@ namespace GameProject
             Premouse = mouse;
             mouse = Mouse.GetState();
 
-            //click code
-           for(int i = 0;i<60; i++)
+            for (int i = 0; i < 60; i++)
+            {
+                MatchColor[i] = Color.White;
+            }
+
+                //click code
+            for (int i = 0;i<60; i++)
             {
                 if (blockHit[i].Contains(mouse.X, mouse.Y) && mouse.LeftButton == ButtonState.Pressed && Premouse.LeftButton == ButtonState.Released)
                 {
                     select = Type[i];
+                    //change box + combo
+                    for (int j = 0; j < 60; j++)
+                    {
+                        if (Type[j] == select)
+                        {
+                            combo++;
+                            Type[j] = r.Next(1, 6);
+                            if (Type[j] == 1)
+                            {
+                                TypeSelect[j] = new Rectangle(0, 0, 72, 72);
+                                MatchColor[j] = Color.Red;
+                            }
+                            else if (Type[j] == 2)
+                            {
+                                TypeSelect[j] = new Rectangle(72, 0, 72, 72);
+                                MatchColor[j] = Color.Red;
+                            }
+                            else if (Type[j] == 3)
+                            {
+                                TypeSelect[j] = new Rectangle(72 * 2, 0, 72, 72);
+                                MatchColor[j] = Color.Red;
+                            }
+                            else if (Type[j] == 4)
+                            {
+                                TypeSelect[j] = new Rectangle(72 * 3, 0, 72, 72);
+                                MatchColor[j] = Color.Red;
+                            }
+                            else if (Type[j] == 5)
+                            {
+                                TypeSelect[j] = new Rectangle(72 * 4, 0, 72, 72);
+                                MatchColor[j] = Color.Red;
+                            }
+                        }
+                    }            
+                }               
+                //combocheck
+                if (combo > 20)
+                {
+                    comboTest = Color.Pink;
+                }
+                if (blockHit[i].Contains(mouse.X, mouse.Y) && mouse.LeftButton == ButtonState.Pressed && Premouse.LeftButton == ButtonState.Released)
+                {
+                    combo = 0;
                 }
             }
+            
+         
+
 
            //Select Check
            if (select == 1)
@@ -147,33 +202,10 @@ namespace GameProject
                 TestColor = Color.Purple;
             }
 
+            //random change
             for (int i = 0; i < 60; i++)
             {
-             //random change
-                if(Type[i] == select)
-                {
-                    Type[i] = r.Next(1, 6);
-                    if (Type[i] == 1)
-                    {
-                        TypeSelect[i] = new Rectangle(0, 0, 72, 72);
-                    }
-                    else if (Type[i] == 2)
-                    {
-                        TypeSelect[i] = new Rectangle(72, 0, 72, 72);
-                    }
-                    else if (Type[i] == 3)
-                    {
-                        TypeSelect[i] = new Rectangle(72 * 2, 0, 72, 72);
-                    }
-                    else if (Type[i] == 4)
-                    {
-                        TypeSelect[i] = new Rectangle(72 * 3, 0, 72, 72);
-                    }
-                    else if (Type[i] == 5)
-                    {
-                        TypeSelect[i] = new Rectangle(72 * 4, 0, 72, 72);
-                    }
-                }
+                
             }
 
                 base.Update(gameTime);
@@ -181,15 +213,17 @@ namespace GameProject
 
         protected override void Draw(GameTime gameTime)
         {
-            GraphicsDevice.Clear(Color.CornflowerBlue);
+            GraphicsDevice.Clear(Color.Purple);
             _spriteBatch.Begin();
             _spriteBatch.Draw(test, Vector2.Zero, TestColor);
-            
+            _spriteBatch.Draw(matchBG, new Vector2(0, 360), comboTest);
             for (int i = 0; i < 60; i++)
             {                  
-                    _spriteBatch.Draw(matchTexture, position[i],TypeSelect[i],Color.White);                         
-            }         
+                    _spriteBatch.Draw(matchTexture, position[i],TypeSelect[i],MatchColor[i]);                         
+            }
+            
             _spriteBatch.End();
+
             base.Draw(gameTime);
         }
 
