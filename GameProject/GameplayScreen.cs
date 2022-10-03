@@ -11,8 +11,7 @@ namespace GameProject
         Game1 game;
         Texture2D test;
         Texture2D matchTexture, matchBG;
-        MouseState mouse;
-        MouseState Premouse;
+        MouseState mouse,Premouse;       
         int[] Type = new int[60];
         Vector2[] position = new Vector2[60];
         Rectangle[] blockHit = new Rectangle[60];
@@ -95,7 +94,7 @@ namespace GameProject
             {
                 ScreenEvent.Invoke(game.mTitleScreen, new EventArgs());
                 return;
-            }
+            }          
             Premouse = mouse;
             mouse = Mouse.GetState();
 
@@ -144,6 +143,7 @@ namespace GameProject
                             }
                         }
                     }
+                    
                 }
                 //combocheck
                 if (combo > 20)
@@ -155,11 +155,8 @@ namespace GameProject
                     combo = 0;
                 }               
             }
-            //reset combocheck
-            if (Keyboard.GetState().IsKeyDown(Keys.R) == true)
-            {
-                comboTest = Color.White;
-            }
+            
+            
             //Select Check
             if (select == 1)
             {
@@ -181,16 +178,22 @@ namespace GameProject
             {
                 TestColor = Color.Purple;
             }
+            //reset combocheck
+            if (Keyboard.GetState().IsKeyDown(Keys.R) == true)
+            {
+                comboTest = Color.White;
+            }
             base.Update(theTime);
         }
         public override void Draw(SpriteBatch theBatch)
         {
-            theBatch.Draw(test, Vector2.Zero, TestColor);
+            theBatch.Draw(test, Vector2.Zero, Color.White);
             theBatch.Draw(matchBG, new Vector2(0, 360), comboTest);
             for (int i = 0; i < 60; i++)
             {
                 theBatch.Draw(matchTexture, position[i], TypeSelect[i], MatchColor[i]);
             }
+            theBatch.Draw(matchTexture, new Vector2(0, 350), new Rectangle(0, 0, 72, 72), TestColor);
             base.Draw(theBatch);
         }
     }

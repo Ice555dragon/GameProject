@@ -9,6 +9,7 @@ namespace GameProject
     {
         Texture2D menuTexture;
         Game1 game;
+        MouseState mouse,Premouse;
         public TitleScreen(Game1 game, EventHandler theScreenEvent) : base(theScreenEvent)
         {
             menuTexture = game.Content.Load<Texture2D>("start");
@@ -16,7 +17,9 @@ namespace GameProject
         }
         public override void Update(GameTime theTime)
         {
-            if (Keyboard.GetState().IsKeyDown(Keys.A) == true)
+            Premouse = mouse;
+            mouse = Mouse.GetState();
+            if (mouse.LeftButton == ButtonState.Pressed && Premouse.LeftButton == ButtonState.Released)
             {
                 ScreenEvent.Invoke(game.mGameplayScreen, new EventArgs());
                 return;
