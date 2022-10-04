@@ -11,6 +11,8 @@ namespace GameProject
         Game1 game;
         Texture2D test;
         Texture2D matchTexture, matchBG;
+        SpriteFont Monbar;
+        int monHealth,playerHealth,coin,exp;
         MouseState mouse,Premouse;       
         int[] Type = new int[60];
         Vector2[] position = new Vector2[60];
@@ -24,8 +26,13 @@ namespace GameProject
             test = game.Content.Load<Texture2D>("Test");
             matchTexture = game.Content.Load<Texture2D>("Match");
             matchBG = game.Content.Load<Texture2D>("matchBG");
+            Monbar = game.Content.Load<SpriteFont>("monbar");
             TestColor = Color.White;
             comboTest = Color.White;
+            monHealth = 100;
+            playerHealth = 100;
+            coin = 0;
+            exp = 0;
 
             //spawn all match3
             int count = 0;
@@ -90,8 +97,11 @@ namespace GameProject
         }
         public override void Update(GameTime theTime)
         {
-            if (Keyboard.GetState().IsKeyDown(Keys.B) == true)
+            if (monHealth <= 0)
             {
+                playerHealth = 100;
+                monHealth = 100;
+                exp = 0;
                 ScreenEvent.Invoke(game.mTitleScreen, new EventArgs());
                 return;
             }          
@@ -143,41 +153,49 @@ namespace GameProject
                             }
                         }
                     }
-                    
                 }
-                //combocheck
-                if (combo > 20)
+                //Select Check
+                if (select == 1)
                 {
-                    comboTest = Color.Pink;
+                    //combocheck
+                    monHealth -= combo;
+                    TestColor = Color.Red;
                 }
+                else if (select == 2)
+                {
+                    coin += combo;
+                    TestColor = Color.Blue;
+                }
+                else if (select == 3)
+                {
+                    TestColor = Color.Green;
+                }
+                else if (select == 4)
+                {
+                    exp += combo;
+                    TestColor = Color.Yellow;
+                }
+                else if (select == 5)
+                {
+                    if(playerHealth < 150)
+                    {
+                        playerHealth += combo;
+                    }
+                    else
+                    {
+                        playerHealth = 150;
+                    }
+                    TestColor = Color.Purple;
+                }
+                //reset combo
                 if (blockHit[i].Contains(mouse.X, mouse.Y) && mouse.LeftButton == ButtonState.Pressed && Premouse.LeftButton == ButtonState.Released)
                 {
                     combo = 0;
-                }               
+                }              
             }
             
             
-            //Select Check
-            if (select == 1)
-            {
-                TestColor = Color.Red;
-            }
-            else if (select == 2)
-            {
-                TestColor = Color.Blue;
-            }
-            else if (select == 3)
-            {
-                TestColor = Color.Green;
-            }
-            else if (select == 4)
-            {
-                TestColor = Color.Yellow;
-            }
-            else if (select == 5)
-            {
-                TestColor = Color.Purple;
-            }
+            
             //reset combocheck
             if (Keyboard.GetState().IsKeyDown(Keys.R) == true)
             {
@@ -194,6 +212,10 @@ namespace GameProject
                 theBatch.Draw(matchTexture, position[i], TypeSelect[i], MatchColor[i]);
             }
             theBatch.Draw(matchTexture, new Vector2(0, 350), new Rectangle(0, 0, 72, 72), TestColor);
+            theBatch.DrawString(Monbar,"monsterHealth = " + monHealth.ToString(), new Vector2(1020, 150), Color.Red);
+            theBatch.DrawString(Monbar, "playerHealth = " + playerHealth.ToString(), new Vector2(180, 150), Color.Red);
+            theBatch.DrawString(Monbar, "coin = " + coin.ToString(), new Vector2(180, 100), Color.Red);
+            theBatch.DrawString(Monbar, "Exp = " + exp.ToString(), new Vector2(180, 115), Color.Red);
             base.Draw(theBatch);
         }
     }

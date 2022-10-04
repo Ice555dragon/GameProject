@@ -37,6 +37,13 @@
 /processorParam:TextureFormat=Color
 /build:matchBG.png
 
+#begin monbar.spritefont
+/importer:FontDescriptionImporter
+/processor:FontDescriptionProcessor
+/processorParam:PremultiplyAlpha=True
+/processorParam:TextureFormat=Compressed
+/build:monbar.spritefont
+
 #begin start.png
 /importer:TextureImporter
 /processor:TextureProcessor
