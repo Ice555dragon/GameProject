@@ -21,7 +21,7 @@ namespace GameProject
             mouse = Mouse.GetState();
             if (mouse.LeftButton == ButtonState.Pressed && Premouse.LeftButton == ButtonState.Released)
             {
-                ScreenEvent.Invoke(game.mGameplayScreen, new EventArgs());
+                ScreenEvent.Invoke(game.mSelectScreen, new EventArgs());
                 return;
             }
             base.Update(theTime);

@@ -15,6 +15,7 @@ namespace GameProject
         public screen mCurrentScreen;
         public GameplayScreen mGameplayScreen;
         public TitleScreen mTitleScreen;
+        public SelectScreen mSelectScreen;
 
 
         public Game1()
@@ -38,7 +39,8 @@ namespace GameProject
             _spriteBatch = new SpriteBatch(GraphicsDevice);
             mGameplayScreen = new GameplayScreen(this, new EventHandler(GameplayScreenEvent));
             mTitleScreen = new TitleScreen(this, new EventHandler(GameplayScreenEvent));
-            mCurrentScreen = mTitleScreen;
+            mSelectScreen = new SelectScreen(this, new EventHandler(GameplayScreenEvent));
+            mCurrentScreen = mGameplayScreen;
         }
 
         protected override void Update(GameTime gameTime)
