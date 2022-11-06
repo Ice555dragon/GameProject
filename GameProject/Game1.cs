@@ -18,6 +18,7 @@ namespace GameProject
         public SelectScreen mSelectScreen;
         public ShopScreen mShopScreen;
         public WinScreen mWinScreen;
+        public GameOverScreen mGameOverScreen;
 
         public Game1()
         {
@@ -43,8 +44,9 @@ namespace GameProject
             mSelectScreen = new SelectScreen(this, new EventHandler(GameplayScreenEvent));
             mShopScreen = new ShopScreen(this, new EventHandler(GameplayScreenEvent));
             mWinScreen = new WinScreen(this, new EventHandler(GameplayScreenEvent));
+            mGameOverScreen = new GameOverScreen(this, new EventHandler(GameplayScreenEvent));
 
-            mCurrentScreen = mShopScreen;
+            mCurrentScreen = mGameOverScreen;
         }
 
         protected override void Update(GameTime gameTime)
