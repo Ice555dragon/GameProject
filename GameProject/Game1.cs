@@ -46,7 +46,7 @@ namespace GameProject
             mWinScreen = new WinScreen(this, new EventHandler(GameplayScreenEvent));
             mGameOverScreen = new GameOverScreen(this, new EventHandler(GameplayScreenEvent));
 
-            mCurrentScreen = mGameplayScreen;
+            mCurrentScreen = mTitleScreen;
         }
 
         protected override void Update(GameTime gameTime)
