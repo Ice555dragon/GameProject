@@ -9,7 +9,7 @@ namespace GameProject
     {
         Random r = new Random();
         Game1 game;
-        Texture2D test,EN_d,EN_r,EN_b,EN_m,EN_mb;
+        Texture2D test,EN_d,EN_r,EN_b,EN_m,EN_mb,MonHp;
         Texture2D matchTexture, matchBG,BG,Mc_m,Mc_r,Mc_s,BarHp;
         SpriteFont Monbar;
         int monHealth,playerHealth,MaxHealth;
@@ -42,6 +42,7 @@ namespace GameProject
             EN_b = game.Content.Load<Texture2D>("EN_b");
             EN_d = game.Content.Load<Texture2D>("EN_d");
             BarHp = game.Content.Load<Texture2D>("Hp_MC");
+            MonHp = game.Content.Load<Texture2D>("Hp_EN");
 
             comboTest = Color.White;          
             playerHealth = 1500;
@@ -368,9 +369,15 @@ namespace GameProject
             theBatch.DrawString(Monbar, "Shield = " + shield.ToString(), new Vector2(180, 80), Color.Red);
             theBatch.DrawString(Monbar, "coin = " + coin.ToString(), new Vector2(180, 100), Color.Red);
             theBatch.DrawString(Monbar, "Exp = " + exp.ToString(), new Vector2(180, 115), Color.Red);
-            theBatch.DrawString(Monbar, "stage = " + stage.ToString(), new Vector2(0, 0), Color.Red);
-            theBatch.DrawString(Monbar, "Level = " + Lv.ToString(), new Vector2(0, 50), Color.Red);
-            theBatch.DrawString(Monbar, "Select = " + Class.ToString(), new Vector2(0, 100), Color.Red);
+            theBatch.DrawString(Monbar, "stage = " + stage.ToString(), new Vector2(0, 120), Color.Red);
+            theBatch.DrawString(Monbar, "Level = " + Lv.ToString(), new Vector2(0, 80), Color.Red);
+            //HpBar
+            theBatch.Draw(BarHp, new Vector2(5, 8), new Rectangle(5, 72, 332, 29), Color.White);
+            theBatch.Draw(BarHp, new Vector2(5, 45), new Rectangle(5, 106, 298, 8), Color.White);
+            theBatch.Draw(BarHp, new Vector2(5, 0), new Rectangle(0, 0, 374, 68),Color.White);
+            //MonBar
+            theBatch.Draw(MonHp, new Vector2(943, 17), new Rectangle(47, 77, 322, 32), Color.White);
+            theBatch.Draw(MonHp, new Vector2(910, 0), new Rectangle(15, 0, 359, 65), Color.White);
 
             base.Draw(theBatch);
         }
