@@ -10,7 +10,7 @@ namespace GameProject
         Random r = new Random();
         Game1 game;
         Texture2D test,EN_d,EN_r,EN_b,EN_m,EN_mb;
-        Texture2D matchTexture, matchBG,BG,Mc_m,Mc_r,Mc_s;
+        Texture2D matchTexture, matchBG,BG,Mc_m,Mc_r,Mc_s,BarHp;
         SpriteFont Monbar;
         int monHealth,playerHealth,MaxHealth;
         int exp, shield, atk, Lv, maxExp, gainExp,coin;
@@ -41,6 +41,7 @@ namespace GameProject
             EN_mb = game.Content.Load<Texture2D>("EN_mb");
             EN_b = game.Content.Load<Texture2D>("EN_b");
             EN_d = game.Content.Load<Texture2D>("EN_d");
+            BarHp = game.Content.Load<Texture2D>("Hp_MC");
 
             comboTest = Color.White;          
             playerHealth = 1500;
@@ -206,7 +207,6 @@ namespace GameProject
                 atk = 9999;
             }
 
-            Premouse = mouse;
             mouse = Mouse.GetState();
 
             for (int i = 0; i < 60; i++)
@@ -309,6 +309,7 @@ namespace GameProject
                     combo = 0;
                 }
             }
+            Premouse = mouse;
         }           
         public override void Draw(SpriteBatch theBatch)
         {
@@ -370,6 +371,7 @@ namespace GameProject
             theBatch.DrawString(Monbar, "stage = " + stage.ToString(), new Vector2(0, 0), Color.Red);
             theBatch.DrawString(Monbar, "Level = " + Lv.ToString(), new Vector2(0, 50), Color.Red);
             theBatch.DrawString(Monbar, "Select = " + Class.ToString(), new Vector2(0, 100), Color.Red);
+
             base.Draw(theBatch);
         }
         public void GetCoin()

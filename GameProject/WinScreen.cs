@@ -26,7 +26,7 @@ namespace GameProject
         }
         public override void Update(GameTime theTime)
         {
-            Premouse = mouse;
+
             mouse = Mouse.GetState();
             if (Hitrestart.Contains(mouse.X, mouse.Y))
             {
@@ -55,6 +55,8 @@ namespace GameProject
                 ScreenEvent.Invoke(game.mTitleScreen, new EventArgs());
                 return;
             }
+            Premouse = mouse;
+
             base.Update(theTime);
         }
         public override void Draw(SpriteBatch theBatch)
@@ -63,6 +65,7 @@ namespace GameProject
             theBatch.Draw(winscreen, new Vector2(375,150), Color.White);
             theBatch.Draw(restart_btn,new Vector2(400,400), restartBox, Color.White);
             theBatch.Draw(menu_btn, new Vector2(400,600),MenuBox, Color.White);
+
             base.Draw(theBatch);
         }
     }

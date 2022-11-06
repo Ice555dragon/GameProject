@@ -113,7 +113,7 @@ namespace GameProject
         }
         public override void Update(GameTime theTime)
         {
-            premouse = mouse;
+
             mouse = Mouse.GetState();
             GetCoin();
             GetHead();
@@ -326,6 +326,8 @@ namespace GameProject
             }
 
             //Upgrade
+
+            premouse = mouse;
             base.Update(theTime);
         }
         public override void Draw(SpriteBatch theBatch)
