@@ -24,7 +24,7 @@ namespace GameProject
             Class = game.Content.Load<Texture2D>("Class_UI");
 
             HitM = new Rectangle(50, 300, 200, 315);
-            HitR = new Rectangle(500, 300, 200, 315);
+            HitR = new Rectangle(500, 400, 200, 315);
             HitS = new Rectangle(1000, 300, 200, 315);
             HitE = new Rectangle(0, 0, 100, 85);
 
@@ -103,7 +103,7 @@ namespace GameProject
         {
             theBatch.Draw(menuTexture, Vector2.Zero, Color.White);
             theBatch.Draw(Mc_m, new Vector2(50,300),Mbox, Color.White);
-            theBatch.Draw(Mc_r, new Vector2(500, 300), Rbox, Color.White);
+            theBatch.Draw(Mc_r, new Vector2(500, 400), Rbox, Color.White);
             theBatch.Draw(Mc_s, new Vector2(1000, 300), Sbox, Color.White);
             theBatch.Draw(Exit, Vector2.Zero,EColor);
             theBatch.Draw(Class,new Vector2(400,0), Color.White);
