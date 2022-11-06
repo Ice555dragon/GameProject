@@ -323,14 +323,20 @@ namespace GameProject
             //player
             if(Class == 1)
             {
+                playerHealth = 1500;
+                atk = 15;
                 theBatch.Draw(Mc_m, playerposition, Color.White);
             }
             else if (Class == 2)
             {
+                playerHealth = 1000;
+                atk = 20;
                 theBatch.Draw(Mc_r, playerposition, Color.White);
             }
             else if (Class == 3)
             {
+                playerHealth = 750;
+                atk = 25;
                 theBatch.Draw(Mc_s, playerposition, Color.White);
             }
 
