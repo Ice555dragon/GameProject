@@ -9,10 +9,14 @@ namespace GameProject
     {
         Random r = new Random();
         Game1 game;
-        Texture2D test;
+        Texture2D test,EN_d,EN_r,EN_b,EN_m,EN_mb;
         Texture2D matchTexture, matchBG,BG,Mc_m,Mc_r,Mc_s;
         SpriteFont Monbar;
-        int monHealth,playerHealth,coin,exp,shield;       
+        int monHealth,playerHealth,MaxHealth;
+        int exp, shield, atk, Lv, maxExp, gainExp;
+        int coin;
+        int EN_select,stage,monAtk;
+        Vector2 playerposition,enpositon;
         int[] Type = new int[60];
         MouseState mouse, Premouse;
         Vector2[] position = new Vector2[60];
@@ -23,6 +27,7 @@ namespace GameProject
         int select, combo = 0;
         public GameplayScreen(Game1 game, EventHandler theScreenEvent) : base(theScreenEvent)
         {
+            
             test = game.Content.Load<Texture2D>("Test");
             matchTexture = game.Content.Load<Texture2D>("Match");
             matchBG = game.Content.Load<Texture2D>("matchBG");
@@ -31,13 +36,27 @@ namespace GameProject
             Mc_m = game.Content.Load<Texture2D>("Mc_m");
             Mc_r = game.Content.Load<Texture2D>("Mc_r");
             Mc_s = game.Content.Load<Texture2D>("Mc_s");
+            EN_m = game.Content.Load<Texture2D>("EN_m");
+            EN_r = game.Content.Load<Texture2D>("EN_r");
+            EN_mb = game.Content.Load<Texture2D>("EN_mb");
+            EN_b = game.Content.Load<Texture2D>("EN_b");
+            EN_d = game.Content.Load<Texture2D>("EN_d");
 
-            comboTest = Color.White;
-            monHealth = 100;
-            playerHealth = 100;
+            comboTest = Color.White;          
+            playerHealth = 1500;
             coin = 0;
             exp = 0;
             shield = 0;
+            atk = 15;
+            EN_select = 1;
+            stage = 0;
+            Lv = 1;
+            maxExp = 100;
+            playerposition = new Vector2(180, 240);
+            enpositon = new Vector2(1020, 240);
+            gainExp = 10;
+            MaxHealth = 1500;
+            
 
             //spawn all match3
             int count = 0;
@@ -102,16 +121,108 @@ namespace GameProject
         }
         public override void Update(GameTime theTime)
         {
-            
             KeyboardState ks = Keyboard.GetState();
-            if (monHealth <= 0)
+            
+
+            //spawn enemy
+            if (monHealth <= 0 && stage < 4)
             {
-                playerHealth = 100;
-                monHealth = 100;
+                EN_select = r.Next(1, 4);
+                if (EN_select == 1)
+                {
+                    monHealth = 1500;
+                    monAtk = 15;
+                }
+                else if (EN_select == 2)
+                {
+                    monHealth = 2500;
+                    monAtk = 10;
+                }
+                else if (EN_select == 3)
+                {
+                    monHealth = 1000;
+                    monAtk = 25;
+                }
+                stage++;
+            }
+            else if (monHealth <= 0 && stage == 4)
+            {
+                monHealth = 3500;
+                monAtk = 25;
+                EN_select = 4;
+                stage++;
+            }
+            else if (monHealth <= 0 && stage > 4 && stage < 9)
+            {
+                EN_select = r.Next(1, 4);
+                if (EN_select == 1)
+                {
+                    monHealth = 1500;
+                    monAtk = 15;
+                }
+                else if (EN_select == 2)
+                {
+                    monHealth = 2500;
+                    monAtk = 10;
+                }
+                else if (EN_select == 3)
+                {
+                    monHealth = 1000;
+                    monAtk = 25;
+                }
+                stage++;
+            }
+            else if (monHealth <= 0 && stage == 9)
+            {
+                monHealth = 5000;
+                monAtk = 35;
+                EN_select = 5;
+                stage++;
+            }    
+
+            //Level up
+            if (exp >= maxExp)
+            {
                 exp = 0;
-                ScreenEvent.Invoke(game.mSelectScreen, new EventArgs());
+                maxExp += 200;
+                atk += 5;
+                coin += 50;
+                playerHealth += 100;
+                MaxHealth += 100;
+                Lv++;
+            }
+            else if(Lv > 15&& exp >= maxExp)
+            {
+                exp = 0;
+                coin += 50;
+                playerHealth += 100;
+            }
+
+            //win/lose
+            if (playerHealth <= 0)
+            {
+                stage = 0;
+                Lv = 1;
+                maxExp = 100;
+                exp = 0;
+            }
+            else if (monHealth <= 0 && stage > 9)
+            {
+                stage = 0;
+                exp = 0;
+                Lv = 1;
+                maxExp = 100;
+                ScreenEvent.Invoke(game.mWinScreen, new EventArgs());
                 return;
-            }          
+            }
+           
+
+
+            if (ks.IsKeyDown(Keys.R) == true)
+            {
+                atk = 9999;
+            }
+
             Premouse = mouse;
             mouse = Mouse.GetState();
 
@@ -123,6 +234,17 @@ namespace GameProject
             //click code
             for (int i = 0; i < 60; i++)
             {
+                if (blockHit[i].Contains(mouse.X, mouse.Y))
+                {
+                    select = Type[i];
+                    for (int j = 0; j < 60; j++)
+                    {
+                        if (Type[j] == select)
+                        {
+                            MatchColor[j] = Color.Gray;
+                        }                    
+                    }
+                }
                 if (blockHit[i].Contains(mouse.X, mouse.Y) && mouse.LeftButton == ButtonState.Pressed && Premouse.LeftButton == ButtonState.Released)
                 {
                     select = Type[i];
@@ -164,12 +286,18 @@ namespace GameProject
                 //Select Check
                 if (select == 1)
                 {
-                    //combocheck
-                    monHealth -= combo;
+                    monHealth -= combo * atk;
                 }
                 else if (select == 2)
                 {
-                    coin += combo;
+                    if (playerHealth < MaxHealth)
+                    {
+                        playerHealth += combo;
+                    }
+                    else
+                    {
+                        playerHealth = MaxHealth;
+                    }                   
                 }
                 else if (select == 3)
                 {
@@ -177,19 +305,11 @@ namespace GameProject
                 }
                 else if (select == 4)
                 {
-                    exp += combo;
+                    coin += combo;
                 }
                 else if (select == 5)
                 {
-                    if(playerHealth < 150)
-                    {
-                        playerHealth += combo;
-                    }
-                    else
-                    {
-                        playerHealth = 150;
-                    }
-                    
+                    exp += combo * gainExp;
                 }
                 //reset combo
                 if (blockHit[i].Contains(mouse.X, mouse.Y) && mouse.LeftButton == ButtonState.Pressed && Premouse.LeftButton == ButtonState.Released)
@@ -199,27 +319,47 @@ namespace GameProject
             }
             
             
-            
-            //reset combocheck
-            if (ks.IsKeyDown(Keys.R) == true)
-            {
-                comboTest = Color.White;
-            }
-            base.Update(theTime);
+
         }
         public override void Draw(SpriteBatch theBatch)
         {
             theBatch.Draw(test, Vector2.Zero, Color.White);
             theBatch.Draw(BG, Vector2.Zero, Color.White);
             theBatch.Draw(matchBG, new Vector2(0, 360), comboTest);
+            //match
             for (int i = 0; i < 60; i++)
             {
                 theBatch.Draw(matchTexture, position[i], TypeSelect[i], MatchColor[i]);
             }
+            theBatch.Draw(Mc_m,playerposition,Color.White);
+            //enemy
+            if (EN_select == 1)
+            {
+                theBatch.Draw(EN_m, enpositon, Color.White);
+            }
+            else if (EN_select == 2)
+            {
+                theBatch.Draw(EN_d, enpositon, Color.White);
+            }
+            else if (EN_select == 3)
+            {
+                theBatch.Draw(EN_r, enpositon, Color.White);
+            }
+            else if (EN_select == 4)
+            {
+                theBatch.Draw(EN_mb, enpositon, Color.White);
+            }
+            else if (EN_select == 5)
+            {
+                theBatch.Draw(EN_b, enpositon, Color.White);
+            }
+
             theBatch.DrawString(Monbar,"monsterHealth = " + monHealth.ToString(), new Vector2(1020, 150), Color.Red);
             theBatch.DrawString(Monbar, "playerHealth = " + playerHealth.ToString(), new Vector2(180, 150), Color.Red);
             theBatch.DrawString(Monbar, "coin = " + coin.ToString(), new Vector2(180, 100), Color.Red);
             theBatch.DrawString(Monbar, "Exp = " + exp.ToString(), new Vector2(180, 115), Color.Red);
+            theBatch.DrawString(Monbar, "stage = " + stage.ToString(), new Vector2(0, 0), Color.Red);
+            theBatch.DrawString(Monbar, "Level = " + Lv.ToString(), new Vector2(0, 50), Color.Red);
             base.Draw(theBatch);
         }
     }

@@ -22,18 +22,7 @@ namespace GameProject
         {           
             Premouse = mouse;
             mouse = Mouse.GetState();
-            if (Select == 1)
-            {
-
-            }
-            else if (Select == 2)
-            {
-
-            }
-            else if (Select == 3)
-            {
-
-            }
+            
             base.Update(theTime);
         }
         public override void Draw(SpriteBatch theBatch)
@@ -41,5 +30,7 @@ namespace GameProject
             theBatch.Draw(Mc_m, new Vector2(0,120), Color.White);
             base.Draw(theBatch);
         }
+
+       
     }
 }
