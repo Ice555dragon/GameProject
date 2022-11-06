@@ -18,7 +18,6 @@ namespace GameProject
         public SelectScreen mSelectScreen;
         public ShopScreen mShopScreen;
         public WinScreen mWinScreen;
-        public int coin;
 
         public Game1()
         {
@@ -45,14 +44,13 @@ namespace GameProject
             mShopScreen = new ShopScreen(this, new EventHandler(GameplayScreenEvent));
             mWinScreen = new WinScreen(this, new EventHandler(GameplayScreenEvent));
 
-            mCurrentScreen = mTitleScreen;
+            mCurrentScreen = mShopScreen;
         }
 
         protected override void Update(GameTime gameTime)
         {
             if (GamePad.GetState(PlayerIndex.One).Buttons.Back == ButtonState.Pressed || Keyboard.GetState().IsKeyDown(Keys.Escape))
-                Exit();
-
+                Exit();           
             mCurrentScreen.Update(gameTime);
             base.Update(gameTime);
         }
@@ -69,6 +67,5 @@ namespace GameProject
         {
             mCurrentScreen = (screen)obj;
         }
-
     }
 }

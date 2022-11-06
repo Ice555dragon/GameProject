@@ -8,11 +8,12 @@ namespace GameProject
     public class WinScreen : screen
     {
         Game1 game;
-        Texture2D winscreen, restart_btn, menu_btn;
+        Texture2D winscreen, restart_btn, menu_btn, menuTexture;
         Rectangle restartBox, MenuBox,Hitrestart,HitMenu;
         MouseState mouse, Premouse;
         public WinScreen(Game1 game, EventHandler theScreenEvent) : base(theScreenEvent)
         {
+            menuTexture = game.Content.Load<Texture2D>("BG_menu");
             winscreen = game.Content.Load<Texture2D>("Game_win");
             restart_btn = game.Content.Load<Texture2D>("Restart");
             menu_btn = game.Content.Load<Texture2D>("Menu");
@@ -58,6 +59,7 @@ namespace GameProject
         }
         public override void Draw(SpriteBatch theBatch)
         {
+            theBatch.Draw(menuTexture, Vector2.Zero, Color.White);
             theBatch.Draw(winscreen, new Vector2(375,150), Color.White);
             theBatch.Draw(restart_btn,new Vector2(400,400), restartBox, Color.White);
             theBatch.Draw(menu_btn, new Vector2(400,600),MenuBox, Color.White);

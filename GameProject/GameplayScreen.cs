@@ -13,8 +13,7 @@ namespace GameProject
         Texture2D matchTexture, matchBG,BG,Mc_m,Mc_r,Mc_s;
         SpriteFont Monbar;
         int monHealth,playerHealth,MaxHealth;
-        int exp, shield, atk, Lv, maxExp, gainExp;
-        int coin;
+        int exp, shield, atk, Lv, maxExp, gainExp,coin;
         int EN_select,stage,monAtk;
         Vector2 playerposition,enpositon;
         int[] Type = new int[60];
@@ -24,10 +23,11 @@ namespace GameProject
         Rectangle[] TypeSelect = new Rectangle[60];
         Color comboTest;
         Color[] MatchColor = new Color[60];
-        int select, combo = 0;
+        int select, combo = 0,Class;
+       
+
         public GameplayScreen(Game1 game, EventHandler theScreenEvent) : base(theScreenEvent)
         {
-            
             test = game.Content.Load<Texture2D>("Test");
             matchTexture = game.Content.Load<Texture2D>("Match");
             matchBG = game.Content.Load<Texture2D>("matchBG");
@@ -44,7 +44,6 @@ namespace GameProject
 
             comboTest = Color.White;          
             playerHealth = 1500;
-            coin = 0;
             exp = 0;
             shield = 0;
             atk = 15;
@@ -56,7 +55,7 @@ namespace GameProject
             enpositon = new Vector2(1020, 240);
             gainExp = 10;
             MaxHealth = 1500;
-            
+
 
             //spawn all match3
             int count = 0;
@@ -93,36 +92,14 @@ namespace GameProject
             }
 
             //random
-            for (int i = 0; i < 60; i++)
-            {
-                Type[i] = r.Next(1, 6);
-                if (Type[i] == 1)
-                {
-                    TypeSelect[i] = new Rectangle(0, 0, 72, 72);
-                }
-                else if (Type[i] == 2)
-                {
-                    TypeSelect[i] = new Rectangle(72, 0, 72, 72);
-                }
-                else if (Type[i] == 3)
-                {
-                    TypeSelect[i] = new Rectangle(72 * 2, 0, 72, 72);
-                }
-                else if (Type[i] == 4)
-                {
-                    TypeSelect[i] = new Rectangle(72 * 3, 0, 72, 72);
-                }
-                else if (Type[i] == 5)
-                {
-                    TypeSelect[i] = new Rectangle(72 * 4, 0, 72, 72);
-                }
-            }
+            Shuffle();
+
             this.game = game;
         }
         public override void Update(GameTime theTime)
         {
             KeyboardState ks = Keyboard.GetState();
-            
+            GetSelect();
 
             //spawn enemy
             if (monHealth <= 0 && stage < 4)
@@ -178,7 +155,7 @@ namespace GameProject
                 monAtk = 35;
                 EN_select = 5;
                 stage++;
-            }    
+            }
 
             //Level up
             if (exp >= maxExp)
@@ -191,7 +168,7 @@ namespace GameProject
                 MaxHealth += 100;
                 Lv++;
             }
-            else if(Lv > 15&& exp >= maxExp)
+            else if (Lv > 15 && exp >= maxExp)
             {
                 exp = 0;
                 coin += 50;
@@ -205,6 +182,7 @@ namespace GameProject
                 Lv = 1;
                 maxExp = 100;
                 exp = 0;
+                GetCoin();
             }
             else if (monHealth <= 0 && stage > 9)
             {
@@ -212,11 +190,16 @@ namespace GameProject
                 exp = 0;
                 Lv = 1;
                 maxExp = 100;
+                GetCoin();
                 ScreenEvent.Invoke(game.mWinScreen, new EventArgs());
                 return;
             }
-           
 
+
+            if (shield <=0)
+            {
+                shield = 0;
+            }
 
             if (ks.IsKeyDown(Keys.R) == true)
             {
@@ -242,7 +225,7 @@ namespace GameProject
                         if (Type[j] == select)
                         {
                             MatchColor[j] = Color.Gray;
-                        }                    
+                        }
                     }
                 }
                 if (blockHit[i].Contains(mouse.X, mouse.Y) && mouse.LeftButton == ButtonState.Pressed && Premouse.LeftButton == ButtonState.Released)
@@ -297,11 +280,18 @@ namespace GameProject
                     else
                     {
                         playerHealth = MaxHealth;
-                    }                   
+                    }
                 }
                 else if (select == 3)
                 {
-                    shield += combo;
+                    if (shield < 10)
+                    {
+                        shield += combo;
+                    }
+                    else if (shield >= 10)
+                    {
+                        shield = 10;
+                    }                   
                 }
                 else if (select == 4)
                 {
@@ -314,13 +304,12 @@ namespace GameProject
                 //reset combo
                 if (blockHit[i].Contains(mouse.X, mouse.Y) && mouse.LeftButton == ButtonState.Pressed && Premouse.LeftButton == ButtonState.Released)
                 {
+                    shield -= monAtk;
+                    playerHealth -= (monAtk - shield);
                     combo = 0;
-                }              
+                }
             }
-            
-            
-
-        }
+        }           
         public override void Draw(SpriteBatch theBatch)
         {
             theBatch.Draw(test, Vector2.Zero, Color.White);
@@ -331,7 +320,20 @@ namespace GameProject
             {
                 theBatch.Draw(matchTexture, position[i], TypeSelect[i], MatchColor[i]);
             }
-            theBatch.Draw(Mc_m,playerposition,Color.White);
+            //player
+            if(Class == 1)
+            {
+                theBatch.Draw(Mc_m, playerposition, Color.White);
+            }
+            else if (Class == 2)
+            {
+                theBatch.Draw(Mc_r, playerposition, Color.White);
+            }
+            else if (Class == 3)
+            {
+                theBatch.Draw(Mc_s, playerposition, Color.White);
+            }
+
             //enemy
             if (EN_select == 1)
             {
@@ -356,11 +358,48 @@ namespace GameProject
 
             theBatch.DrawString(Monbar,"monsterHealth = " + monHealth.ToString(), new Vector2(1020, 150), Color.Red);
             theBatch.DrawString(Monbar, "playerHealth = " + playerHealth.ToString(), new Vector2(180, 150), Color.Red);
+            theBatch.DrawString(Monbar, "Shield = " + shield.ToString(), new Vector2(180, 80), Color.Red);
             theBatch.DrawString(Monbar, "coin = " + coin.ToString(), new Vector2(180, 100), Color.Red);
             theBatch.DrawString(Monbar, "Exp = " + exp.ToString(), new Vector2(180, 115), Color.Red);
             theBatch.DrawString(Monbar, "stage = " + stage.ToString(), new Vector2(0, 0), Color.Red);
             theBatch.DrawString(Monbar, "Level = " + Lv.ToString(), new Vector2(0, 50), Color.Red);
+            theBatch.DrawString(Monbar, "Select = " + Class.ToString(), new Vector2(0, 100), Color.Red);
             base.Draw(theBatch);
+        }
+        public void GetCoin()
+        {
+            Store.Coin = coin;
+        }
+        public void GetSelect()
+        {
+            Class = Store.SelectMc;
+        }
+        public void Shuffle()
+        {
+            for (int i = 0; i < 60; i++)
+            {
+                Type[i] = r.Next(1, 6);
+                if (Type[i] == 1)
+                {
+                    TypeSelect[i] = new Rectangle(0, 0, 72, 72);
+                }
+                else if (Type[i] == 2)
+                {
+                    TypeSelect[i] = new Rectangle(72, 0, 72, 72);
+                }
+                else if (Type[i] == 3)
+                {
+                    TypeSelect[i] = new Rectangle(72 * 2, 0, 72, 72);
+                }
+                else if (Type[i] == 4)
+                {
+                    TypeSelect[i] = new Rectangle(72 * 3, 0, 72, 72);
+                }
+                else if (Type[i] == 5)
+                {
+                    TypeSelect[i] = new Rectangle(72 * 4, 0, 72, 72);
+                }
+            }
         }
     }
 }

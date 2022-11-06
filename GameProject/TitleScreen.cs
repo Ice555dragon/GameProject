@@ -64,6 +64,5 @@ namespace GameProject
             theBatch.Draw(shop_btn, new Vector2(450, 500), shopBox, Color.White);
             base.Draw(theBatch);
         }
-
     }
 }
